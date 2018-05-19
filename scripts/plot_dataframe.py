@@ -68,9 +68,10 @@ def plot_analyzed_dataframe(args: Namespace) -> None:
     dataframe = analyze.populate_buy_trend(dataframe)
     dataframe = analyze.populate_sell_trend(dataframe)
 
-    if len(dataframe.index) > 750:
-        logger.warning('Ticker contained more than 750 candles, clipping.')
-    data = dataframe.tail(750)
+    nbCandleMax = 2000
+    if len(dataframe.index) > nbCandleMax:
+        logger.warning('Ticker contained more than %s candles, clipping.', nbCandleMax)
+    data = dataframe.tail(nbCandleMax)
 
     candles = go.Candlestick(
         x=data.date,
@@ -82,7 +83,7 @@ def plot_analyzed_dataframe(args: Namespace) -> None:
     )
 
     df_buy = data[data['buy'] == 1]
-    buys = go.Scattergl(
+    buys = go.Scatter(
         x=df_buy.date,
         y=df_buy.close,
         mode='markers',
@@ -95,7 +96,7 @@ def plot_analyzed_dataframe(args: Namespace) -> None:
         )
     )
     df_sell = data[data['sell'] == 1]
-    sells = go.Scattergl(
+    sells = go.Scatter(
         x=df_sell.date,
         y=df_sell.close,
         mode='markers',

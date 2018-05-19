@@ -201,10 +201,10 @@ class Backtesting(object):
                         # Note, need to be json.dump friendly
                         # record a tuple of pair, current_profit_percent,
                         # entry-date, duration
-                        records.append((pair, trade_entry[1],
-                                        row.date.strftime('%s'),
-                                        row2.date.strftime('%s'),
-                                        index, trade_entry[3]))
+                        records.append((pair,   trade_entry[1],
+                                                str(int(row.date.timestamp())),
+                                                str(int(row2.date.timestamp())),
+                                                index, trade_entry[3]))
         # For now export inside backtest(), maybe change so that backtest()
         # returns a tuple like: (dataframe, records, logs, etc)
         if record and record.find('trades') >= 0:
